@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build;Nuget" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ArtifactsPath>$(MSBuildProjectDirectory)\Artifacts</ArtifactsPath>    
+    <ProjectName>PBDesk.Selenium.Extension</ProjectName>
+    <SeleniumVersion>A.B.C</SeleniumVersion>
+    <BuildRevision>0</BuildRevision>
+    <PackageVersion>$(SeleniumVersion).$(BuildRevision)</PackageVersion>    
+    <PackageFolder>$(ProjectName).$(PackageVersion)</PackageFolder>
+    <PackageLocation>$(MSBuildProjectDirectory)/Packages</PackageLocation>
+    <MSBuildExtensionPack>$(MSBuildProjectDirectory)\MSBuild.ExtensionPack.4.0.8.0</MSBuildExtensionPack>
+    <CSProjLocation>$(MSBuildProjectDirectory)\..\$(ProjectName)\$(ProjectName)</CSProjLocation>
+    <CSProj>$(CSProjLocation)\$(ProjectName).csproj</CSProj>
+    <BaseNuspecFile>$(MSBuildProjectDirectory)\$(ProjectName).nuspec</BaseNuspecFile>
+    <TargetNuspecFileLocation>$(PackageLocation)\$(PackageFolder)</TargetNuspecFileLocation>
+    <TargetNuspecFileName>$(ProjectName).$(PackageVersion).nuspec</TargetNuspecFileName>
+  </PropertyGroup>
+      
+  
+    
+  <Import Project="$(MSBuildExtensionPack)\MSBuild.ExtensionPack.tasks"/>
+    
+  <Target Name="Build" DependsOnTargets="SetVersion" >
+    
+     <MSBuild Projects="$(CSProj)"
+        Properties="Configuration=Release;OutputPath=$(ArtifactsPath)\net451\;IntermediateOutputPath=obj\Release\net451\;TargetFrameworkVersion=v4.5.1" />
+    <MSBuild Projects="$(CSProj)"
+        Properties="Configuration=Release;OutputPath=$(ArtifactsPath)\net45\;IntermediateOutputPath=obj\Release\net45\;TargetFrameworkVersion=v4.5" />
+    <MSBuild Projects="$(CSProj)"
+        Properties="Configuration=Release;OutputPath=$(ArtifactsPath)\net40\;IntermediateOutputPath=obj\Release\net40\;TargetFrameworkVersion=v4.0" />
+    
+  </Target>
+  
+  <Target Name="Nuget">
+    
+    <ItemGroup>
+      <ArtifactsFiles Include="$(ArtifactsPath)\**\*.*" />
+    </ItemGroup>
+ 
+    <Copy SourceFiles="@(ArtifactsFiles)" DestinationFolder="$(PackageLocation)/$(PackageFolder)\lib\%(RecursiveDir)" />
+
+    <Copy SourceFiles="$(BaseNuspecFile)" DestinationFiles="$(TargetNuspecFileLocation)\$(TargetNuspecFileName)" />
+
+    <ItemGroup>
+      <namespaces Include="MyNamespace">
+        <Prefix>DefaultNS</Prefix>
+        <Uri>http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd</Uri>
+      </namespaces>
+    </ItemGroup>
+
+   
+    <MSBuild.ExtensionPack.Xml.XmlFile TaskAction="UpdateElement" 
+                                       Namespaces="@(namespaces)"
+                                       File="$(TargetNuspecFileLocation)\$(TargetNuspecFileName)" 
+                                       XPath="/DefaultNS:package/DefaultNS:metadata/DefaultNS:version" 
+                                       InnerText="$(PackageVersion)"/>
+    
+
+
+  <Exec WorkingDirectory="$(PackageLocation)\$(PackageFolder)" 
+          Command="$(MSBuildProjectDirectory)\..\$(ProjectName)\.nuget\nuget.exe pack $(TargetNuspecFileLocation)\$(TargetNuspecFileName) " />
+
+  </Target>
+  
+  <Target Name="SetVersion">
+    <ItemGroup>
+      <AssemblyInfoFiles Include="$(CSProjLocation)\**\AssemblyInfo.cs" />
+    </ItemGroup>
+  
+
+    <MSBuild.ExtensionPack.Framework.AssemblyInfo AssemblyInfoFiles="@(AssemblyInfoFiles)"
+                  AssemblyVersion="$(PackageVersion)"                               
+                  AssemblyFileVersion="$(PackageVersion)"
+                
+              />
+  </Target>
+    
+  <Target Name="Clean">
+    <Message Text="CleanStart" />
+    <RemoveDir Directories="$(ArtifactsPath)\" Condition="Exists($(ArtifactsPath))" />
+    <RemoveDir Directories="$(PackageFolder)" Condition="Exists($(PackageFolder))" />
+  </Target>
+  <Target Name="CleanEnd">
+    <Message Text="CleanEnd" />
+    <RemoveDir Directories="$(ArtifactsPath)" Condition="Exists($(ArtifactsPath))" />
+  </Target>
+</Project>
+
