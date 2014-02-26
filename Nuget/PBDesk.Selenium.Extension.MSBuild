@@ -2,14 +2,14 @@
 <Project ToolsVersion="12.0" DefaultTargets="Build;Nuget;CleanEnd" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <ArtifactsPath>$(MSBuildProjectDirectory)\Artifacts</ArtifactsPath>    
-    <ProjectName>PBDesk.Utils</ProjectName>
+    <ProjectName>PBDesk.Selenium.Extension</ProjectName>
+    <SeleniumVersion>A.B.C</SeleniumVersion>
     <BuildRevision>0</BuildRevision>
-    <BuildYear>$([System.DateTime]::Now.Year.ToString())</BuildYear>
-    <BuildMonth>$([System.DateTime]::Now.Month.ToString())</BuildMonth>
-    <BuildDate>$([System.DateTime]::Now.Day.ToString())</BuildDate>
-    <BuildVersion>$(BuildYear).$(BuildMonth).$(BuildDate).$(BuildRevision)</BuildVersion>
-    <PackageFolder>$(ProjectName).$(BuildVersion)</PackageFolder>
+    <PackageVersion>$(SeleniumVersion).$(BuildRevision)</PackageVersion>    
+    <PackageFolder>$(ProjectName).$(PackageVersion)</PackageFolder>
     <MSBuildExtensionPack>$(MSBuildProjectDirectory)\MSBuild.ExtensionPack.4.0.8.0</MSBuildExtensionPack>
+    <CSProjLocation>$(MSBuildProjectDirectory)\..\$(ProjectName)</CSProjLocation>
+    <CSProj>$(CSProjLocation)\$(ProjectName).csproj</CSProj>
   </PropertyGroup>
       
   
@@ -17,15 +17,14 @@
   <Import Project="$(MSBuildExtensionPack)\MSBuild.ExtensionPack.tasks"/>
     
   <Target Name="Build" DependsOnTargets="SetVersion" >
-    <Message Text="$(MSBuildProjectDirectory)" />
-     <MSBuild Projects="..\PBDesk.Utils\PBDesk.Utils.csproj"
+    
+     <MSBuild Projects="$(CSProj)"
         Properties="Configuration=Release;OutputPath=$(ArtifactsPath)\net451\;IntermediateOutputPath=obj\Release\net451\;TargetFrameworkVersion=v4.5.1" />
-    <MSBuild Projects="..\PBDesk.Utils\PBDesk.Utils.csproj"
+    <MSBuild Projects="$(CSProj)"
         Properties="Configuration=Release;OutputPath=$(ArtifactsPath)\net45\;IntermediateOutputPath=obj\Release\net45\;TargetFrameworkVersion=v4.5" />
-    <MSBuild Projects="..\PBDesk.Utils\PBDesk.Utils.csproj"
+    <MSBuild Projects="$(CSProj)"
         Properties="Configuration=Release;OutputPath=$(ArtifactsPath)\net40\;IntermediateOutputPath=obj\Release\net40\;TargetFrameworkVersion=v4.0" />
-    <!--  <MSBuild Projects="..\PBDesk.Utils\PBDesk.Utils.csproj"
-        Properties="Configuration=Release;OutputPath=$(ArtifactsPath)\net35\;IntermediateOutputPath=obj\Release\net35\;TargetFrameworkVersion=v3.5" />-->
+    
   </Target>
   
   <Target Name="Nuget">
@@ -71,20 +70,14 @@
   
   <Target Name="SetVersion">
     <ItemGroup>
-      <AssemblyInfoFiles Include="$(MSBuildProjectDirectory)\..\PBDesk.Utils\**\AssemblyInfo.cs" />
+      <AssemblyInfoFiles Include="$(CSProjLocation)\**\AssemblyInfo.cs" />
     </ItemGroup>
   
-    <Message Text="SetVersions Called" />
-    <Message Text="@(AssemblyInfoFiles)" />
+
     <MSBuild.ExtensionPack.Framework.AssemblyInfo AssemblyInfoFiles="@(AssemblyInfoFiles)"
-                AssemblyFileMajorVersion="$(BuildYear)"
-                AssemblyFileMinorVersion="$(BuildMonth)" 
-                AssemblyFileBuildNumber="$(BuildDate)"
-                AssemblyFileRevision="$(BuildRevision)"
-                AssemblyMajorVersion="$(BuildYear)"       
-                AssemblyMinorVersion="$(BuildMonth)"
-                AssemblyBuildNumber="$(BuildDate)"
-                AssemblyRevision="$(BuildRevision)"      
+                  AssemblyVersion="$(PackageVersion)"                               
+                  AssemblyFileVersion="$(PackageVersion)"
+                
               />
   </Target>
     
