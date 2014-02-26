@@ -13,6 +13,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{67ECF7
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Nuget", "Nuget", "{7BC93721-F2EA-41F9-A115-7AA027D2207E}"
+	ProjectSection(SolutionItems) = preProject
+		..\Nuget\Make.bat = ..\Nuget\Make.bat
+		..\Nuget\PBDesk.Selenium.Extension.MSBuild = ..\Nuget\PBDesk.Selenium.Extension.MSBuild
+		..\Nuget\PBDesk.Selenium.Extension.nuspec = ..\Nuget\PBDesk.Selenium.Extension.nuspec
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

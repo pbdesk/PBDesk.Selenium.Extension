@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build;Nuget;CleanEnd" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build;Nuget" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <ArtifactsPath>$(MSBuildProjectDirectory)\Artifacts</ArtifactsPath>    
     <ProjectName>PBDesk.Selenium.Extension</ProjectName>
@@ -7,9 +7,13 @@
     <BuildRevision>0</BuildRevision>
     <PackageVersion>$(SeleniumVersion).$(BuildRevision)</PackageVersion>    
     <PackageFolder>$(ProjectName).$(PackageVersion)</PackageFolder>
+    <PackageLocation>$(MSBuildProjectDirectory)/Packages</PackageLocation>
     <MSBuildExtensionPack>$(MSBuildProjectDirectory)\MSBuild.ExtensionPack.4.0.8.0</MSBuildExtensionPack>
-    <CSProjLocation>$(MSBuildProjectDirectory)\..\$(ProjectName)</CSProjLocation>
+    <CSProjLocation>$(MSBuildProjectDirectory)\..\$(ProjectName)\$(ProjectName)</CSProjLocation>
     <CSProj>$(CSProjLocation)\$(ProjectName).csproj</CSProj>
+    <BaseNuspecFile>$(MSBuildProjectDirectory)\$(ProjectName).nuspec</BaseNuspecFile>
+    <TargetNuspecFileLocation>$(PackageLocation)\$(PackageFolder)</TargetNuspecFileLocation>
+    <TargetNuspecFileName>$(ProjectName).$(PackageVersion).nuspec</TargetNuspecFileName>
   </PropertyGroup>
       
   
@@ -30,22 +34,12 @@
   <Target Name="Nuget">
     
     <ItemGroup>
-    <ArtifactsFiles Include="$(ArtifactsPath)\**\*.*" />
-  </ItemGroup>
-  
-    <!--<MakeDir  Directories="$(PackageFolder)"/>
-    <MakeDir  Directories="$(PackageFolder)\lib"/>
-    <MakeDir  Directories="$(PackageFolder)\lib\net451"/>
-    <MakeDir  Directories="$(PackageFolder)\lib\net45"/>
-    <MakeDir  Directories="$(PackageFolder)\lib\net40"/>-->
-    <!--<Copy
-            SourceFiles="@(ArtifactsFiles)"
-            DestinationFiles="@(ArtifactsFiles->'$(PackageFolder)\lib\%(RecursiveDir)%(Filename)%(Extension)')"
-    />-->
-    
-    <Copy SourceFiles="@(ArtifactsFiles)" DestinationFolder="$(PackageFolder)\lib\%(RecursiveDir)" />
+      <ArtifactsFiles Include="$(ArtifactsPath)\**\*.*" />
+    </ItemGroup>
+ 
+    <Copy SourceFiles="@(ArtifactsFiles)" DestinationFolder="$(PackageLocation)/$(PackageFolder)\lib\%(RecursiveDir)" />
 
-    <Copy SourceFiles="$(MSBuildProjectDirectory)\PBDesk.Utils.nuspec" DestinationFiles="$(PackageFolder)\PBDesk.Utils.$(BuildVersion).nuspec" />
+    <Copy SourceFiles="$(BaseNuspecFile)" DestinationFiles="$(TargetNuspecFileLocation)\$(TargetNuspecFileName)" />
 
     <ItemGroup>
       <namespaces Include="MyNamespace">
@@ -57,14 +51,14 @@
    
     <MSBuild.ExtensionPack.Xml.XmlFile TaskAction="UpdateElement" 
                                        Namespaces="@(namespaces)"
-                                       File="$(PackageFolder)\PBDesk.Utils.$(BuildVersion).nuspec" 
+                                       File="$(TargetNuspecFileLocation)\$(TargetNuspecFileName)" 
                                        XPath="/DefaultNS:package/DefaultNS:metadata/DefaultNS:version" 
-                                       InnerText="$(BuildVersion)"/>
+                                       InnerText="$(PackageVersion)"/>
     
 
 
-  <Exec WorkingDirectory="$(PackageFolder)" 
-          Command="$(MSBuildProjectDirectory)\..\.nuget\nuget.exe pack PBDesk.Utils.$(BuildVersion).nuspec" />
+  <Exec WorkingDirectory="$(PackageLocation)\$(PackageFolder)" 
+          Command="$(MSBuildProjectDirectory)\..\$(ProjectName)\.nuget\nuget.exe pack $(TargetNuspecFileLocation)\$(TargetNuspecFileName) " />
 
   </Target>
   
