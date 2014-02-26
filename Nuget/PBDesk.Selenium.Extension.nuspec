@@ -3,7 +3,7 @@
   <metadata>
     <id>PBDesk.Selenium.Extension</id>
     <version>1.40.0.0</version>
-    <title>PBDesk.Utils</title>
+    <title>PBDesk.Selenium.Extension</title>
     <authors>Pinal Bhatt</authors>
     <owners>Pinal Bhatt</owners>
     <projectUrl>https://github.com/pbdesk/PBDesk.Selenium.Extension</projectUrl>

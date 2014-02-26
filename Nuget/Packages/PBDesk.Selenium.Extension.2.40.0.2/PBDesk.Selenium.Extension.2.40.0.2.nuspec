@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>PBDesk.Selenium.Extension</id>
+    <version>2.40.0.2</version>
+    <title>PBDesk.Selenium.Extension</title>
+    <authors>Pinal Bhatt</authors>
+    <owners>Pinal Bhatt</owners>
+    <projectUrl>https://github.com/pbdesk/PBDesk.Selenium.Extension</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>PBDesk.Selenium.Extension C# Common &amp; Useful Wrapper Utility Library over Selenium Web Drivers build for .Net 4/4.5/4.5.1</description>
+    <summary>PBDesk.Selenium.Extension for .Net 4/4.5/4.5.1</summary>
+    <releaseNotes>
+    </releaseNotes>
+    <tags>C#, Utility, Common Utility Library, Extension Methods, selenium, unit testing, automated testing,</tags>
+    <frameworkAssemblies>
+      <frameworkAssembly assemblyName="System" targetFramework="" />
+      <frameworkAssembly assemblyName="System.Core" targetFramework="" />
+      <frameworkAssembly assemblyName="System.Data" targetFramework="" />
+      <frameworkAssembly assemblyName="System.Xml" targetFramework="" />
+      <frameworkAssembly assemblyName="System.Xml.Linq" targetFramework="" />
+      <frameworkAssembly assemblyName="System.Configuration" targetFramework="" />
+    </frameworkAssemblies>
+  </metadata>
+  <files>
+    <file src="lib\net40\WebDriver.dll" target="lib\net40\WebDriver.dll" />
+    <file src="lib\net40\WebDriver.Support.dll" target="lib\net40\WebDriver.Support.dll" />
+    <file src="lib\net40\WebDriver.Support.xml" target="lib\net40\WebDriver.Support.xml" />
+    <file src="lib\net40\WebDriver.xml" target="lib\net40\WebDriver.xml" />
+    <file src="lib\net40\PBDesk.Selenium.Extension.dll" target="lib\net40\PBDesk.Selenium.Extension.dll" />
+    <file src="lib\net45\WebDriver.dll" target="lib\net45\WebDriver.dll" />
+    <file src="lib\net45\WebDriver.Support.dll" target="lib\net45\WebDriver.Support.dll" />
+    <file src="lib\net45\WebDriver.Support.xml" target="lib\net45\WebDriver.Support.xml" />
+    <file src="lib\net45\WebDriver.xml" target="lib\net45\WebDriver.xml" />
+    <file src="lib\net45\PBDesk.Selenium.Extension.dll" target="lib\net45\PBDesk.Selenium.Extension.dll" />
+    <file src="lib\net451\WebDriver.dll" target="lib\net451\WebDriver.dll" />
+    <file src="lib\net451\WebDriver.Support.dll" target="lib\net451\WebDriver.Support.dll" />
+    <file src="lib\net451\WebDriver.Support.xml" target="lib\net451\WebDriver.Support.xml" />
+    <file src="lib\net451\WebDriver.xml" target="lib\net451\WebDriver.xml" />
+    <file src="lib\net451\PBDesk.Selenium.Extension.dll" target="lib\net451\PBDesk.Selenium.Extension.dll" />
+  </files>
+</package>
