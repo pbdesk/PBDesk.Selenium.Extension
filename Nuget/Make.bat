@@ -1,1 +1,1 @@
-msbuild PBDesk.Selenium.Extension.MSBuild  /p:BuildRevision=1 /p:SeleniumVersion=2.40.0
+msbuild PBDesk.Selenium.Extension.MSBuild  /p:BuildRevision=2 /p:SeleniumVersion=2.40.0
